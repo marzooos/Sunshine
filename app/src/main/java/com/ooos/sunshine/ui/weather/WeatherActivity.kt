@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ooos.sunshine.BaseActivity
+import com.ooos.sunshine.R
 import com.ooos.sunshine.databinding.ActivityWeatherBinding
 import com.ooos.sunshine.logic.model.Weather
 import com.ooos.sunshine.logic.model.getSky
@@ -44,8 +45,18 @@ class WeatherActivity : BaseActivity() {
                 Log.d("SUNSHINE", "Weather data is null.")
                 result.exceptionOrNull()?.printStackTrace()
             }
+            binding.swipeRefresh.isRefreshing = false
         })
+        binding.swipeRefresh.setColorSchemeResources(R.color.purple_200)
+        binding.swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+        }
+        refreshWeather()
+    }
+
+    private fun refreshWeather() {
         viewModel.queryWeather(viewModel.lng, viewModel.lat)
+        binding.swipeRefresh.isRefreshing = true
     }
 
     private fun showWeatherInfo(weather: Weather) {
