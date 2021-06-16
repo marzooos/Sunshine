@@ -1,7 +1,12 @@
 package com.ooos.sunshine.ui.weather
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ooos.sunshine.BaseActivity
@@ -12,7 +17,7 @@ import com.ooos.sunshine.logic.model.getSky
 
 class WeatherActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityWeatherBinding
+    lateinit var binding: ActivityWeatherBinding
 
     val viewModel by lazy {
         ViewModelProvider(this).get(WeatherViewModel::class.java)
@@ -52,9 +57,26 @@ class WeatherActivity : BaseActivity() {
             refreshWeather()
         }
         refreshWeather()
+        // 滑动菜单.
+        binding.nowLayout.navBtn.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+        binding.drawerLayout.addDrawerListener(object: DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerOpened(drawerView: View) {}
+
+            override fun onDrawerClosed(drawerView: View) {
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {}
+
+        })
     }
 
-    private fun refreshWeather() {
+    fun refreshWeather() {
         viewModel.queryWeather(viewModel.lng, viewModel.lat)
         binding.swipeRefresh.isRefreshing = true
     }
