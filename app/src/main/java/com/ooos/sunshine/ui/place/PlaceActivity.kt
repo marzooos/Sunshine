@@ -1,10 +1,11 @@
-package com.ooos.sunshine
+package com.ooos.sunshine.ui.place
 
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.ooos.sunshine.BaseActivity
+import com.ooos.sunshine.R
 
-class MainActivity : AppCompatActivity() {
+class PlaceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
