@@ -17,10 +17,24 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        config {
+            Properties properties = new Properties()
+            InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+            properties.load(inputStream)
+
+            storeFile file(properties.getProperty('KEY_PATH'))
+            storePassword properties.getProperty('KEY_PASS')
+            keyAlias properties.getProperty('ALIAS_NAME')
+            keyPassword properties.getProperty('ALIAS_PASS')
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
