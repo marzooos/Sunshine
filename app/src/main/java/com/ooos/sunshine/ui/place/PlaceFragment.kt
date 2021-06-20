@@ -34,6 +34,8 @@ class PlaceFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        // If the user has selected the geographic location, it will query whether
+        // the data has been saved, and if it has been saved, the jump will be executed.
         if (activity is PlaceActivity && viewModel.isSavedPlace()) {
             val place = viewModel.getSavedPlace()
             val intent = Intent(context, WeatherActivity::class.java).apply {

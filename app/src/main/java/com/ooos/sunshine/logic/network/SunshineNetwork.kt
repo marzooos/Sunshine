@@ -10,12 +10,16 @@ import kotlin.coroutines.suspendCoroutine
 
 object SunshineNetwork {
 
+    /**
+     * Search places.
+     */
     private val placeService = ServiceCreator.create<PlaceService>()
 
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
 
-
-
+    /**
+     * Query realtime weather and daily weather.
+     */
     private val weatherService = ServiceCreator.create<WeatherService>()
 
     suspend fun getRealtimeWeather(lng: String, lat: String) =
@@ -24,9 +28,7 @@ object SunshineNetwork {
     suspend fun getDailyWeather(lng: String, lat: String) =
         weatherService.getDailyWeather(lng, lat).await()
 
-
-
-    // 简化回调. 协程 + 挂起函数 + suspendCoroutine 函数 + 泛型
+    // 简化回调. 泛型 + 挂起函数 + 协程 + suspendCoroutine 函数
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
             enqueue(object : Callback<T> {

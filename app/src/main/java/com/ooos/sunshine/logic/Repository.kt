@@ -19,7 +19,7 @@ object Repository {
             val places = placeResponse.places
             Result.success(places)
         } else {
-            Result.failure(RuntimeException("placeResponse status is ${placeResponse.places}"))
+            Result.failure(RuntimeException("PlaceResponse status is ${placeResponse.status}"))
         }
     }
 

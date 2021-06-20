@@ -6,6 +6,9 @@ import com.google.gson.Gson
 import com.ooos.sunshine.SunshineApplication
 import com.ooos.sunshine.logic.model.PlaceResponse.Place
 
+/**
+ * Save the location selected by the user.
+ */
 object PlaceDao {
 
     fun savePlace(place: Place) {

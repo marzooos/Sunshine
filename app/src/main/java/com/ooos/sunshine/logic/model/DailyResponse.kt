@@ -2,6 +2,10 @@ package com.ooos.sunshine.logic.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * JSON data of daily weather.
+ * doc : https://api.caiyunapp.com/v2.5/{token}/116.4073963,39.9041999/daily.json
+ */
 data class DailyResponse(val status: String, val result: Result) {
 
     data class Result(val daily: Daily)

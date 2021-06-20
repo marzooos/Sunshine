@@ -23,16 +23,18 @@ class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: L
             LayoutInflater.from(parent.context).inflate(R.layout.place_item, parent, false)
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {
-            val position = holder.adapterPosition
+            val position = holder.bindingAdapterPosition
             val place = placeList[position]
             val activity = fragment.activity
-            if(activity is WeatherActivity) {
+            // WeatherActivity reuses the PlaceFragment layout. If the current Activity is
+            // WeatherActivity, only the data is refreshed, and the Activity is not jumped.
+            if (activity is WeatherActivity) {
                 activity.binding.drawerLayout.closeDrawers()
                 activity.viewModel.lng = place.location.lng
                 activity.viewModel.lat = place.location.lat
                 activity.viewModel.placeName = place.name
                 activity.refreshWeather()
-            }else {
+            } else {
                 val intent = Intent(parent.context, WeatherActivity::class.java).apply {
                     putExtra("lng", place.location.lng)
                     putExtra("lat", place.location.lat)

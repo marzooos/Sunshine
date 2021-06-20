@@ -2,7 +2,6 @@ package com.ooos.sunshine.ui.weather
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.GravityCompat
@@ -36,18 +35,11 @@ class WeatherActivity : BaseActivity() {
         if (viewModel.placeName.isEmpty()) {
             viewModel.placeName = intent.getStringExtra("place_name") ?: ""
         }
-        Log.i(
-            "SUNSHINE",
-            "placeName = ${viewModel.placeName}, lng = ${viewModel.lng}, lat = ${viewModel.lat}"
-        )
         viewModel.weatherLiveData.observe(this, { result ->
-            Log.d("SUNSHINE", "WeatherLiveData has changed.")
             val weather = result.getOrNull()
             if (weather != null) {
-                Log.d("SUNSHINE", "Receive weather data, update view.")
                 showWeatherInfo(weather)
             } else {
-                Log.d("SUNSHINE", "Weather data is null.")
                 result.exceptionOrNull()?.printStackTrace()
             }
             binding.swipeRefresh.isRefreshing = false
@@ -57,18 +49,22 @@ class WeatherActivity : BaseActivity() {
             refreshWeather()
         }
         refreshWeather()
-        // 滑动菜单.
+        // Swipe menu.
         binding.nowLayout.navBtn.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-        binding.drawerLayout.addDrawerListener(object: DrawerLayout.DrawerListener {
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
 
             override fun onDrawerOpened(drawerView: View) {}
 
             override fun onDrawerClosed(drawerView: View) {
+                // Hide keyboard.
                 val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                manager.hideSoftInputFromWindow(
+                    drawerView.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
             }
 
             override fun onDrawerStateChanged(newState: Int) {}
@@ -82,7 +78,7 @@ class WeatherActivity : BaseActivity() {
     }
 
     private fun showWeatherInfo(weather: Weather) {
-
+        // Interface module 1.
         binding.nowLayout.placeName.text = viewModel.placeName
         val realtime = weather.realtime
         val currentTempText = "${realtime.temperature.toInt()} ℃"
@@ -92,13 +88,13 @@ class WeatherActivity : BaseActivity() {
         val currentPM25Text = "空气指数 ${realtime.airQuality.aqi.chn.toInt()}"
         binding.nowLayout.currentAQI.text = currentPM25Text
         binding.nowLayout.weatherNowLayout.setBackgroundResource(sky.bg)
-
+        // Interface module 2.
         val daily = weather.daily
         val layoutManager = LinearLayoutManager(this)
         binding.forecastLayout.forecastRecyclerView.layoutManager = layoutManager
         val weatherAdapter = WeatherAdapter(daily)
         binding.forecastLayout.forecastRecyclerView.adapter = weatherAdapter
-
+        // Interface module 3.
         val lifeIndex = daily.lifeIndex
         binding.lifeIndexLayout.coldRiskText.text = lifeIndex.coldRisk[0].desc
         binding.lifeIndexLayout.dressingText.text = lifeIndex.dressing[0].desc

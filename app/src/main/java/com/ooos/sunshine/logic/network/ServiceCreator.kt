@@ -10,7 +10,7 @@ object ServiceCreator {
     private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .build();
+            .build()
 
     fun <T> createRetrofit(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 

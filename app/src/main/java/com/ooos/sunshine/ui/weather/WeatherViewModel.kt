@@ -1,6 +1,5 @@
 package com.ooos.sunshine.ui.weather
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -16,7 +15,6 @@ class WeatherViewModel : ViewModel() {
     var placeName = ""
 
     val weatherLiveData = Transformations.switchMap(_locationLiveData) { location ->
-        Log.i("SUNSHINE", "Weather ViewModel  >>>  lng = ${location.lng}, lat = ${location.lat}")
         Repository.queryWeather(location.lng, location.lat)
     }
 

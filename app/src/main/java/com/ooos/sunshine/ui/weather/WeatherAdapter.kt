@@ -1,21 +1,16 @@
 package com.ooos.sunshine.ui.weather
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ooos.sunshine.R
 import com.ooos.sunshine.logic.model.DailyResponse
 import com.ooos.sunshine.logic.model.getSky
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class WeatherAdapter(private val daily: DailyResponse.Daily) :
@@ -34,12 +29,12 @@ class WeatherAdapter(private val daily: DailyResponse.Daily) :
         return ViewHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: WeatherAdapter.ViewHolder, position: Int) {
         val skycon = daily.skycon[position]
         val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
         val date = dateFormat.parse(skycon.date)
-        holder.dateInfo.text = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date)
+        if (date != null) holder.dateInfo.text =
+            SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(date)
         val sky = getSky(skycon.value)
         holder.skyIcon.setImageResource(sky.icon)
         holder.skyInfo.text = sky.info
